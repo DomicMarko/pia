@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 24, 2017 8:19:09 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entity.Festival" table="festival" catalog="festivali" optimistic-lock="version">
+        <id name="idFest" type="java.lang.Long">
+            <column name="idFest" />
+            <generator class="identity" />
+        </id>
+        <property name="naziv" type="string">
+            <column name="naziv" length="30" />
+        </property>
+        <property name="datumVremeOd" type="timestamp">
+            <column name="datumVremeOd" length="19" />
+        </property>
+        <property name="datumVremeDo" type="timestamp">
+            <column name="datumVremeDo" length="19" />
+        </property>
+        <property name="mesto" type="string">
+            <column name="mesto" length="50" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="20" />
+        </property>
+        <property name="prosecnaOcena" type="java.lang.Double">
+            <column name="prosecnaOcena" precision="22" scale="0" />
+        </property>
+        <property name="info" type="string">
+            <column name="info" length="65535" />
+        </property>
+        <property name="maxRezUser" type="java.lang.Integer">
+            <column name="maxRezUser" />
+        </property>
+        <property name="brojPregleda" type="java.lang.Integer">
+            <column name="brojPregleda" />
+        </property>
+        <property name="cenaPaket" type="java.lang.Double">
+            <column name="cenaPaket" precision="22" scale="0" />
+        </property>
+        <property name="cenaDan" type="java.lang.Double">
+            <column name="cenaDan" precision="22" scale="0" />
+        </property>
+        <set name="rezervacijas" table="rezervacija" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idFest" not-null="true" />
+            </key>
+            <one-to-many class="entity.Rezervacija" />
+        </set>
+        <set name="izvodjacs" table="izvodjac" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idFest" not-null="true" />
+            </key>
+            <one-to-many class="entity.Izvodjac" />
+        </set>
+        <set name="links" table="link" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idFest" not-null="true" />
+            </key>
+            <one-to-many class="entity.Link" />
+        </set>
+        <set name="ocenas" table="ocena" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idFest" />
+            </key>
+            <one-to-many class="entity.Ocena" />
+        </set>
+        <set name="medias" table="media" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idFest" not-null="true" />
+            </key>
+            <one-to-many class="entity.Media" />
+        </set>
+        <set name="porukas" table="poruka" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idFest" />
+            </key>
+            <one-to-many class="entity.Poruka" />
+        </set>
+        <set name="komentars" table="komentar" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idFest" />
+            </key>
+            <one-to-many class="entity.Komentar" />
+        </set>
+        <set name="dans" table="dan" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idFest" not-null="true" />
+            </key>
+            <one-to-many class="entity.Dan" />
+        </set>
+    </class>
+</hibernate-mapping>

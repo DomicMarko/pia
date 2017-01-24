@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jan 24, 2017 7:49:36 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated Jan 24, 2017 8:19:09 AM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="entity.Korisnik" table="korisnik" catalog="festivali" optimistic-lock="version">
         <id name="username" type="string">

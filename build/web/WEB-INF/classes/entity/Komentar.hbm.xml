@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 24, 2017 8:19:09 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entity.Komentar" table="komentar" catalog="festivali" optimistic-lock="version">
+        <id name="idKom" type="java.lang.Long">
+            <column name="idKom" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="festival" class="entity.Festival" fetch="select">
+            <column name="idFest" />
+        </many-to-one>
+        <many-to-one name="korisnik" class="entity.Korisnik" fetch="select">
+            <column name="username" length="50" />
+        </many-to-one>
+        <property name="komentar" type="string">
+            <column name="komentar" length="65535" />
+        </property>
+        <property name="vremeKom" type="timestamp">
+            <column name="vremeKom" length="19" />
+        </property>
+    </class>
+</hibernate-mapping>

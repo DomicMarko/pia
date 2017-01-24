@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <p:menubar>
+            <p:submenu label="File">
+                <p:submenu label="New">
+                    <p:menuitem value="Project" url="#"/>
+                    <p:menuitem value="Other" url="#"/>
+                </p:submenu>
+                <p:menuitem value="Open" url="#"></p:menuitem>
+                <p:menuitem value="Quit" url="#"></p:menuitem>
+            </p:submenu>
+            <p:submenu label="Edit">
+                <p:menuitem value="Undo" url="#"></p:menuitem>
+                <p:menuitem value="Redo" url="#"></p:menuitem>
+            </p:submenu>
+            <p:submenu label="Help">
+                <p:menuitem value="Contents" url="#" />
+                <p:submenu label="Search">
+                    <p:submenu label="Text">
+                        <p:menuitem value="Workspace" url="#" />
+                    </p:submenu>
+                    <p:menuitem value="File" url="#" />
+                </p:submenu>
+            </p:submenu>
+        </p:menubar>
+    </h:body>
+</html>
+

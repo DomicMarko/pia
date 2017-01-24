@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 24, 2017 8:19:09 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entity.Ocena" table="ocena" catalog="festivali" optimistic-lock="version">
+        <id name="idOc" type="java.lang.Long">
+            <column name="idOc" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="festival" class="entity.Festival" fetch="select">
+            <column name="idFest" />
+        </many-to-one>
+        <many-to-one name="korisnik" class="entity.Korisnik" fetch="select">
+            <column name="username" length="50" />
+        </many-to-one>
+        <property name="ocena" type="java.lang.Byte">
+            <column name="ocena" />
+        </property>
+    </class>
+</hibernate-mapping>

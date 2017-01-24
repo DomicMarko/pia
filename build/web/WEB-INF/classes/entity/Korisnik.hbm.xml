@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 24, 2017 8:19:09 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entity.Korisnik" table="korisnik" catalog="festivali" optimistic-lock="version">
+        <id name="username" type="string">
+            <column name="username" length="50" />
+            <generator class="assigned" />
+        </id>
+        <property name="password" type="string">
+            <column name="password" length="20" not-null="true" />
+        </property>
+        <property name="ime" type="string">
+            <column name="ime" length="50" />
+        </property>
+        <property name="prezime" type="string">
+            <column name="prezime" length="50" />
+        </property>
+        <property name="telefon" type="string">
+            <column name="telefon" length="20" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="40" />
+        </property>
+        <property name="active" type="java.lang.Boolean">
+            <column name="active" />
+        </property>
+        <property name="tipKorisnika" type="string">
+            <column name="tipKorisnika" length="20" />
+        </property>
+        <property name="blokRez" type="boolean">
+            <column name="blokRez" not-null="true" />
+        </property>
+        <property name="vremePristupa" type="timestamp">
+            <column name="vremePristupa" length="19" />
+        </property>
+        <set name="ocenas" table="ocena" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="username" length="50" />
+            </key>
+            <one-to-many class="entity.Ocena" />
+        </set>
+        <set name="rezervacijas" table="rezervacija" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="username" length="50" not-null="true" />
+            </key>
+            <one-to-many class="entity.Rezervacija" />
+        </set>
+        <set name="porukas" table="poruka" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="username" length="50" not-null="true" />
+            </key>
+            <one-to-many class="entity.Poruka" />
+        </set>
+        <set name="komentars" table="komentar" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="username" length="50" />
+            </key>
+            <one-to-many class="entity.Komentar" />
+        </set>
+        <set name="medias" table="media" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="username" length="50" />
+            </key>
+            <one-to-many class="entity.Media" />
+        </set>
+    </class>
+</hibernate-mapping>

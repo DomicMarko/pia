@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 24, 2017 8:19:09 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entity.Izvodjac" table="izvodjac" catalog="festivali" optimistic-lock="version">
+        <id name="idIzv" type="java.lang.Long">
+            <column name="idIzv" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="dan" class="entity.Dan" fetch="select">
+            <column name="idDan" not-null="true" />
+        </many-to-one>
+        <many-to-one name="festival" class="entity.Festival" fetch="select">
+            <column name="idFest" not-null="true" />
+        </many-to-one>
+        <property name="naziv" type="string">
+            <column name="naziv" length="50" />
+        </property>
+        <property name="vremeOd" type="timestamp">
+            <column name="vremeOd" length="19" />
+        </property>
+        <property name="vremeDo" type="timestamp">
+            <column name="vremeDo" length="19" />
+        </property>
+    </class>
+</hibernate-mapping>
