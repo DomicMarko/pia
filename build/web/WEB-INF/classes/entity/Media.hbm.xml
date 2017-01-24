@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 24, 2017 7:49:36 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entity.Media" table="media" catalog="festivali" optimistic-lock="version">
+        <id name="idMed" type="java.lang.Long">
+            <column name="idMed" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="festival" class="entity.Festival" fetch="select">
+            <column name="idFest" not-null="true" />
+        </many-to-one>
+        <many-to-one name="korisnik" class="entity.Korisnik" fetch="select">
+            <column name="username" length="50" />
+        </many-to-one>
+        <property name="url" type="string">
+            <column name="url" length="65535" />
+        </property>
+        <property name="slikaVideo" type="string">
+            <column name="slikaVideo" length="5" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="20" />
+        </property>
+    </class>
+</hibernate-mapping>
