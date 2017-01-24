@@ -54,10 +54,16 @@
                                         <h:commandLink action="#{loginControler.guest()}">Udjite kao gost</h:commandLink>                                                                                
                                     </div>
                                     <div clas="checkbox" style="margin-bottom: 10px;">
+                                        <h:commandLink action="changepass">Promenite lozinku</h:commandLink>                                                                                
+                                    </div>
+                                    <div clas="checkbox" style="margin-bottom: 10px;">
                                         Nemate nalog? <h:commandLink action="register">Registrujte se.</h:commandLink>                                                                                
                                     </div>
                                     <!-- Change this to a button or input when using this as a form -->
                                     <h:commandButton class="btn btn-lg btn-success btn-block" value="Login" action="#{loginControler.logIn()}"/>
+                                    <div class="form-group">                                        
+                                        <span style="color:red;">#{loginControler.loginMessage}</span>
+                                    </div> 
                                 </fieldset>                            
                             </h:form>
                         </div>

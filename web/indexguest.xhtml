@@ -1,0 +1,281 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+
+        <title>Početna</title>
+
+        <!-- Bootstrap Core CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet"/>
+
+        <!-- Custom CSS -->
+        <link href="css/modern-business.css" rel="stylesheet"/>
+
+        <!-- Custom Fonts -->
+        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <style>
+            .ui-calendar input{ width: 100% !important; }
+            .ui-panelgrid-cell{ color: #222 !important; }
+        </style>
+    </h:head>
+    <h:body>          
+                
+        <!-- Navigation -->
+        <h:form id="navBarGuestLinksForm">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background-color: #3084da; color: #eee;">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html" style="color: #eee;">Start Bootstrap</a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">                        
+                        <li>
+                            <h:commandLink action="login" style="color: #eee;">Ulogujte se</h:commandLink>                            
+                        </li>       
+                        <li>
+                            <h:commandLink action="register" style="color: #eee;">Registrujte se</h:commandLink>
+                        </li>                        
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+        </h:form>
+        <!-- Header Carousel -->
+        <header id="myCarousel" class="carousel slide">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <div class="fill" style="background-image:url('img/slideOne.png');"></div>
+                    <div class="carousel-caption">
+                        <h2>Caption 1</h2>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="fill" style="background-image:url('img/slideTwo.png');"></div>
+                    <div class="carousel-caption">
+                        <h2>Caption 2</h2>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="fill" style="background-image:url('img/slideThree.png');"></div>
+                    <div class="carousel-caption">
+                        <h2>Caption 3</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                <span class="icon-prev"></span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                <span class="icon-next"></span>
+            </a>
+        </header>
+        
+        <!-- Page Content -->
+        <div class="container">
+
+            <!-- Marketing Icons Section -->
+            <div class="row">
+                <h:form id="formPretraga">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Pretraga festivala
+                        </h1>
+                    </div>
+                    <div class="page-header">
+                        <div class="row">
+                            <div class="col-md-4">                        
+                                <div class="panel-heading">
+                                    <h4>Naziv</h4>   
+                                    <p:inputText style="width:100%;" value="#{guestControler.nazivFestivala}" />
+                                </div>                                                
+                            </div>
+                            <div class="col-md-4">                        
+                                <div class="panel-heading">
+                                    <h4>Datum od:</h4>
+                                    <p:growl id="msgsDatumOd" showDetail="true" />                                
+                                    <p:calendar id="popupDatumOd" style="width:100%;" value="#{guestControler.datumOd}" pattern="dd.MM.yyyy."/>                                                                
+                                </div>                
+                            </div>
+                            <div class="col-md-4">                        
+                                <div class="panel-heading">
+                                    <h4>Datum do:</h4>                                
+                                    <p:growl id="msgsDatumDo" showDetail="true" />                                
+                                    <p:calendar id="popupDatumDo" style="width:100%;" value="#{guestControler.datumDo}" pattern="dd.MM.yyyy."/>                                                                                                
+                                </div>                            
+                            </div>
+                        </div>   
+                        <div class="row">
+                            <div class="col-md-4">                        
+                                <div class="panel-heading">
+                                    <h4>Mesto</h4>   
+                                    <p:inputText style="width:100%;" value="#{guestControler.mesto}" />
+                                </div>                                                
+                            </div>
+                            <div class="col-md-4">                        
+                                <div class="panel-heading">
+                                    <h4>Izvođač</h4>
+                                    <p:inputText style="width:100%;" value="#{guestControler.izvodjac}" />                                                            
+                                </div>                
+                            </div>
+                            <div class="col-md-4">                        
+                                <div class="panel-heading">                                                    
+                                    <h:commandButton class="btn btn-success" style="width:100%; margin-top: 37px;" value="Traži" action="#{guestControler.traziFestivale()}"/>
+                                </div>                            
+                            </div>
+                        </div> 
+                    </div>
+                </h:form>
+            </div>
+            <div class="row page-header">                
+                <c:if test="${!(empty guestControler.trazeniFestivali)}">
+                    <h:form id="pageFestivali">
+                        <p:dataTable id="tbl" var="traz" value="#{guestControler.trazeniFestivali}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                     paginator="true" rows="2" style="margin-bottom:20px">
+
+                            <f:facet name="{Exporters}">
+                                <h:commandLink>
+                                    <p:graphicImage name="/img/excel.png" width="24"/>
+                                    <p:dataExporter type="xls" target="tbl" fileName="festivali" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/img/pdf.png" width="24"/>
+                                    <p:dataExporter type="pdf" target="tbl" fileName="festivali"/>
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/img/csv.png" width="24"/>
+                                    <p:dataExporter type="csv" target="tbl" fileName="festivali" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/img/xml.png" width="24"/>
+                                    <p:dataExporter type="xml" target="tbl" fileName="festivali" />
+                                </h:commandLink>
+                            </f:facet>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Naziv" />
+                                </f:facet>
+                                <h:outputText value="#{traz.naziv}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Vreme od"/>
+                                </f:facet>
+                                <h:outputText value="#{traz.datumVremeOd}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Vreme do" />
+                                </f:facet>
+                                <h:outputText value="#{traz.datumVremeDo}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Mesto" />
+                                </f:facet>
+                                <h:outputText value="#{traz.mesto}" />
+                            </p:column>
+                        </p:dataTable>                        
+                    </h:form>
+                </c:if>                
+            </div>
+            <!-- /.row -->
+            
+            <div class="row">
+                <div class="col-lg-12">
+                    <h:form id="form" style="color:#000 !important;">
+                        <p:carousel value="#{carouselView.festivals}" headerText="Responsive" var="festival" itemStyle="text-align:center" responsive="true">
+                            <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
+                                <f:facet name="header">
+
+                                </f:facet>
+
+                                <h:outputText value="Naziv:" />
+                                <h:outputText value="#{festival.naziv}" />
+
+                                <h:outputText value="Datum od:" />
+                                <h:outputText value="#{festival.datumVremeOd}" />
+
+                                <h:outputText value="Datum do:" />
+                                <h:outputText value="#{festival.datumVremeDo}" />
+
+                                <h:outputText value="Mesto:" />
+                                <h:outputText value="#{festival.mesto}" />
+
+                                <h:outputText value="Prosecna ocena:" />
+                                <h:outputText value="#{festival.prosecnaOcena}" />
+
+                                <h:outputText value="Cena paketa:" />
+                                <h:outputText value="#{festival.cenaPaket}" />
+
+                                <h:outputText value="Cena pojedinačne karte:" />
+                                <h:outputText value="#{festival.cenaDan}" />
+                            </p:panelGrid>
+
+                            <f:facet name="footer">
+
+                            </f:facet>
+                        </p:carousel>
+
+                    </h:form>
+                </div>                
+            </div>            
+        </div>                    
+        
+        <!-- Bootstrap Core JavaScript -->
+        <script src="js/bootstrap.min.js"></script>
+
+        <!-- Script to Activate the Carousel -->
+        <script>
+        $('.carousel').carousel({
+            interval: 5000 //changes the speed
+        })
+        </script>       
+    </h:body>
+</html>
+
