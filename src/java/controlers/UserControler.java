@@ -28,7 +28,7 @@ import org.hibernate.criterion.Restrictions;
  */
 @SessionScoped
 @ManagedBean
-public class GuestControler {
+public class UserControler {
     private String nazivFestivala;
     private Date datumOd;
     private Date datumDo;
@@ -36,6 +36,7 @@ public class GuestControler {
     private String izvodjac;
     private String porukaZaPretragu;
     private List<Festival> trazeniFestivali = new ArrayList<Festival>();
+    private Festival currentFestival;    
 
     public String getNazivFestivala() {
         return nazivFestivala;
@@ -84,6 +85,22 @@ public class GuestControler {
     public void setIzvodjac(String izvodjac) {
         this.izvodjac = izvodjac;
     }
+
+    public String getPorukaZaPretragu() {
+        return porukaZaPretragu;
+    }
+
+    public void setPorukaZaPretragu(String porukaZaPretragu) {
+        this.porukaZaPretragu = porukaZaPretragu;
+    }
+
+    public Festival getCurrentFestival() {
+        return currentFestival;
+    }
+
+    public void setCurrentFestival(Festival currentFestival) {
+        this.currentFestival = currentFestival;
+    }        
     
     public String traziFestivale() {
         
@@ -99,7 +116,7 @@ public class GuestControler {
             if(datumOd != null) cr.add(Restrictions.gt("datumVremeOd", datumOd));
             if(datumDo != null) cr.add(Restrictions.lt("datumVremeOd", datumDo));
             if(mesto != null && !mesto.equals("") && !mesto.equals(" ")) cr.add(Restrictions.like("mesto", "%" + mesto + "%"));                                    
-            
+            cr.add(Restrictions.gt("datumVremeDo", new Date()));
             List result = cr.list();
             if(izvodjac != null && !izvodjac.equals("") && !izvodjac.equals(" ")){
                 for(int j = 0; j < result.size(); j++){
@@ -121,6 +138,33 @@ public class GuestControler {
             session.close();
         }
         
-        return "indexguest";
+        return "index";
+    }
+    
+    public String detailFestival(Long festivalId){
+        String resultPage = "festival";
+        
+        Session session = null;
+        Transaction tx = null;
+        try{
+            session = HibernateUtil.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            Criteria cr = session.createCriteria(Festival.class);
+            cr.add(Restrictions.eq("idFest", festivalId));                 
+            List result = cr.list();
+            if(result.size() > 0) currentFestival = (Festival)result.get(0);
+            else{
+                porukaZaPretragu = "Došlo je do greške, molimo Vas, pokušajte malo kasnije.";
+                resultPage = "index";
+            }            
+        } catch(Exception ex){
+            if (tx!=null) tx.rollback();
+            ex.printStackTrace();            
+        } finally{
+            if (tx!=null) tx.commit();
+            session.close();
+        }
+        
+        return resultPage;
     }
 }

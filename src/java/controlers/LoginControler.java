@@ -16,6 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -401,5 +403,13 @@ public class LoginControler {
         }                
         
         return returnPage;
+    }
+    
+    public String LogOut() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+        session.invalidate();
+        korisnik = LogedInKorisnik.korisnik = null;
+        return "login";
     }
 }
