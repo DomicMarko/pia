@@ -56,6 +56,9 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav navbar-right">                              
                             <li>
+                                <h:commandLink action="#{userControler.reservations()}" style="color: #eee;">Pregled rezervacija</h:commandLink>
+                            </li>
+                            <li>
                                 <h:commandLink action="#{loginControler.LogOut()}" style="color: #eee;">Izlogujte se</h:commandLink>
                             </li>                        
                         </ul>
@@ -95,10 +98,54 @@
                             </tr>                            
                         </tbody>
                     </table>
-                    
+                    <c:if test="${!(empty userControler.izvodjaciFestivala)}">
+                        <table class="table table-bordered table-hover table-striped borderless">
+                            <tbody>
+                                <ui:repeat value="#{userControler.izvodjaciFestivala}" var="izv">
+                                    <tr>
+                                        <th>#{izv.get("redniBroj")}. dan:</th>
+                                        <td>#{izv.get("naziv")}, <h:outputText value="#{izv.get('vremeOd')}"><f:convertDateTime pattern="HH:mm" /></h:outputText> - <h:outputText value="#{izv.get('vremeDo')}"><f:convertDateTime pattern="HH:mm" /></h:outputText></td>
+                                    </tr>
+                                </ui:repeat>
+                            </tbody>
+                        </table>
+                    </c:if>
                 </div>
                 <div class="col-md-6">
                     <img class="img-responsive" src="http://placehold.it/700x450" alt=""/>
+                    <h3 class="page-header" style="margin-top: 20px;">Rezervacija karte</h3>
+                    <h:form id="reservationForm">
+                        <div class="row">                            
+                            <div class="col-lg-7">
+                                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">                                    
+                                    <p:selectOneRadio id="tipRezervacije" value="#{userControler.tipRezervacije}"  layout="pageDirection" columns="3">
+                                        <f:selectItem  itemValue="1" itemLabel="Paket ulaznica, cena: #{userControler.currentFestival.cenaPaket}" />
+                                        <f:selectItem itemValue="2" itemLabel="Pojedinacna ulaznica, cena: #{userControler.currentFestival.cenaDan}" />     
+                                    </p:selectOneRadio>
+                                </h:panelGrid>
+                                <h:commandButton class="btn btn-success" style="width:100%; margin-top: 16px;" value="Rezervišite">
+                                    <f:ajax execute="reservationForm" listener="#{userControler.reserve()}" render="outputReserveMessage" />                                    
+                                </h:commandButton>                                
+                            </div>
+                            <div class="col-lg-5">
+                                <h:panelGrid columns="1" cellpadding="5">                                    
+                                    <p:outputLabel for="brojUlaznica" value="Broj ulaznica: " />
+                                    <p:inputText style="width:100%;" id="brojUlaznica" value="#{userControler.brojUlaznica}" />                                    
+
+                                    <p:outputLabel for="dan" value="Dan: " />
+                                    <p:selectOneMenu id="dan" value="#{userControler.kojiDan}" style="width:100%;">
+                                        <f:selectItem itemLabel="Odaberite dan" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems value="#{userControler.dani}" />
+                                    </p:selectOneMenu>
+                                </h:panelGrid>                               
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span><h:outputText id="outputReserveMessage" value="#{userControler.porukaZaRezervaciju}"/> </span>
+                            </div>
+                        </div>
+                    </h:form>                    
                 </div>
             </div>
             

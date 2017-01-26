@@ -56,8 +56,11 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav navbar-right">                              
                             <li>
+                                <h:commandLink action="#{userControler.reservations()}" style="color: #eee;">Pregled rezervacija</h:commandLink>
+                            </li>
+                            <li>
                                 <h:commandLink action="#{loginControler.LogOut()}" style="color: #eee;">Izlogujte se</h:commandLink>
-                            </li>                        
+                            </li>                         
                         </ul>
                     </div>
                     <!-- /.navbar-collapse -->
