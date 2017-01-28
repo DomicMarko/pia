@@ -3,11 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/NetBeansProjects/piaProjekat/web/index.xhtml</file>
+            <file>file:/D:/NetBeansProjects/piaProjekat/web/addfestival0.xhtml</file>
             <file>file:/D:/NetBeansProjects/piaProjekat/src/java/controlers/UserControler.java</file>
+            <file>file:/D:/NetBeansProjects/piaProjekat/src/java/entity/FestivalAdd.java</file>
             <file>file:/D:/NetBeansProjects/piaProjekat/web/festival.xhtml</file>
-            <file>file:/D:/NetBeansProjects/piaProjekat/src/java/entity/Rezervacija.java</file>
-            <file>file:/D:/NetBeansProjects/piaProjekat/web/reservations.xhtml</file>
+            <file>file:/D:/NetBeansProjects/piaProjekat/src/java/controlers/AdminControler.java</file>
+            <file>file:/D:/NetBeansProjects/piaProjekat/web/addfestival1.xhtml</file>
+            <file>file:/D:/NetBeansProjects/piaProjekat/web/addfestival2.xhtml</file>
         </group>
     </open-files>
 </project-private>

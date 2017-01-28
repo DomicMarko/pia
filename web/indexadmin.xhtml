@@ -1,0 +1,316 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+
+        <title>Festivali - Admin panel</title>
+
+        <!-- Bootstrap Core CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet"/>
+
+        <!-- Custom CSS -->
+        <link href="css/modern-business.css" rel="stylesheet"/>
+
+        <!-- Custom Fonts -->
+        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <style>
+            .ui-calendar input{ width: 100% !important; }
+            .ui-panelgrid-cell{ color: #222 !important; }
+        </style>
+    </h:head>
+    <h:body>          
+                
+        <!-- Navigation -->
+        <h:form id="navBarGuestLinksForm">
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background-color: #3084da; color: #eee;">
+                <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <h:commandLink class="navbar-brand" action="indexadmin" style="color: #eee;">Festivali</h:commandLink>                        
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">                        
+                            <li>
+                                <h:commandLink action="#{adminControler.addNewFestival(false)}" style="color: #eee;">Dodati dogadjaj ručno</h:commandLink>
+                            </li>
+                            <li>
+                                <h:commandLink action="#{adminControler.addNewFestival(true)}" style="color: #eee;">Dodati JSON/CSV</h:commandLink>
+                            </li>
+                            <li>
+                                <h:commandLink action="#{loginControler.LogOut()}" style="color: #eee;">Izlogujte se</h:commandLink>
+                            </li>                        
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+                <!-- /.container -->
+            </nav>
+        </h:form>        
+        
+        <!-- Page Content -->
+        <div class="container">                                                
+            
+            <div class="row page-header"> 
+                <div class="col-xs-12">
+                    <h3 class="page-header" style="margin-top: 20px;">Kupovina ulaznica</h3>
+                    <h:form id="buyTicketForm">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <p:selectOneMenu id="kojiFestival" value="#{adminControler.kojiFestival}" style="width:100%;">
+                                    <p:ajax listener="#{adminControler.onFestivalChange}" update="buyTicketForm" />
+                                    <f:selectItem itemLabel="Odaberite festival" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{adminControler.aktuelniFestivali}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="row">                            
+                            <div class="col-lg-7">                                
+                                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">                                    
+                                    <p:selectOneRadio id="tipRezervacije" value="#{adminControler.tipRezervacije}"  layout="pageDirection" columns="3">
+                                        <f:selectItem  itemValue="1" itemLabel="Paket ulaznica, cena: #{adminControler.cenaPaketa}" />
+                                        <f:selectItem itemValue="2" itemLabel="Pojedinacna ulaznica, cena: #{adminControler.cenaDan}" />     
+                                    </p:selectOneRadio>
+                                </h:panelGrid>
+                                <h:commandButton class="btn btn-success" style="width:100%; margin-top: 16px;" value="Kupite">
+                                    <f:ajax execute="buyTicketForm" listener="#{adminControler.buyTicket()}" render="outputBuyMessage" />                                    
+                                </h:commandButton>                                
+                            </div>
+                            <div class="col-lg-5">
+                                <h:panelGrid columns="1" cellpadding="5" style="width:100%;">                                    
+                                    <p:outputLabel for="brojUlaznica" value="Broj ulaznica: " />
+                                    <p:inputText style="width:100%;" id="brojUlaznica" value="#{adminControler.brojUlaznica}" />                                    
+
+                                    <p:outputLabel for="dan" value="Dan: " />
+                                    <p:selectOneMenu id="dan" value="#{adminControler.kojiDan}" style="width:100%;">
+                                        <f:selectItem itemLabel="Odaberite dan" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems value="#{adminControler.dani}" />
+                                    </p:selectOneMenu>
+                                </h:panelGrid>                               
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span><h:outputText id="outputBuyMessage" value="#{adminControler.porukaZaKupovinu}"/> </span>
+                            </div>
+                        </div>
+                    </h:form>                    
+                </div>
+            </div>
+            
+            <div class="row page-header">
+                <div class="col-xs-12">
+                    <h3 class="page-header" style="margin-top: 20px;">Kupovina rezervisanih ulaznica</h3>
+                    <c:if test="${!(empty adminControler.sveRezervacije)}">
+                        <h:form id="pageRezervacije">
+                            <p:dataTable id="tbl" var="rez" value="#{adminControler.sveRezervacije}"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                         paginator="true" rows="10" style="margin-bottom:20px">                           
+
+                                <p:column style="text-align:center;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Korisnik" />
+                                    </f:facet>
+                                    <h:outputText value="#{rez.get('username')}" />
+                                </p:column>
+
+                                <p:column style="text-align:center;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Festival" />
+                                    </f:facet>
+                                    <h:outputText value="#{rez.get('nazivFestivala')}" />
+                                </p:column>
+
+                                <p:column style="text-align:center;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Tip rezervacije" />
+                                    </f:facet>
+                                    <h:outputText value="#{rez.get('paket') ? 'paket ulaznica' : 'ulaznica za dan'}" />
+                                </p:column>
+
+                                <p:column style="text-align:center;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Dan" />
+                                    </f:facet>
+                                    <h:outputText value="#{rez.get('paket') ? 'svi dani' : rez.get('kojiDan')}" />
+                                </p:column>
+
+                                <p:column style="text-align:center;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Broj ulaznica" />
+                                    </f:facet>
+                                    <h:outputText value="#{rez.get('brojUlaznica')}" />
+                                </p:column>
+
+                                <p:column style="text-align:center;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Vreme rezervacije" />
+                                    </f:facet>
+                                    <h:outputText value="#{rez.get('vremeRez')}"><f:convertDateTime pattern="dd.MM.yyyy. HH:mm" /></h:outputText>                                
+                                </p:column>
+
+                                <p:column style="text-align:center;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Cena" />
+                                    </f:facet>
+                                    <h:outputText value="#{rez.get('paket') ? rez.get('cenaPaket') * rez.get('brojUlaznica') : rez.get('cenaDan') * rez.get('brojUlaznica')}" />                           
+                                </p:column>                           
+
+                                <p:column style="text-align:center;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Realizacija rezervacije" />
+                                    </f:facet>
+                                    <h:commandLink action="#{adminControler.buyReserve(rez.get('idRez'))}">
+                                        <f:ajax render="pageRezervacije" />
+                                        Kupljeno
+                                    </h:commandLink>                                                           
+                                </p:column>
+                            </p:dataTable>                        
+                        </h:form>
+                    </c:if>                
+                </div>
+                
+            </div>
+            <!-- /.row -->
+            
+            <div class="row page-header">
+                <div class="col-lg-12">
+                    <h:form id="form" style="color:#000 !important;">
+                        <p:carousel value="#{adminCarouselView.mostViewFestivals}" headerText="5 NAJVIŠE PREGLEDANIH FESTIVALA" var="festival" itemStyle="text-align:center" responsive="true">
+                            <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
+                                <f:facet name="header">
+
+                                </f:facet>
+
+                                <h:outputText value="Naziv:" />
+                                <h:outputText value="#{festival.naziv}" />
+
+                                <h:outputText value="Datum od:" />
+                                <h:outputText value="#{festival.datumVremeOd}"><f:convertDateTime pattern="dd.MM.yyyy." /></h:outputText>
+
+                                <h:outputText value="Datum do:" />
+                                <h:outputText value="#{festival.datumVremeDo}"><f:convertDateTime pattern="dd.MM.yyyy." /></h:outputText>
+
+                                <h:outputText value="Mesto:" />
+                                <h:outputText value="#{festival.mesto}" />
+
+                                <h:outputText value="Prosecna ocena:" />
+                                <h:outputText value="#{festival.prosecnaOcena}" />
+
+                                <h:outputText value="Cena paketa:" />
+                                <h:outputText value="#{festival.cenaPaket}" />
+
+                                <h:outputText value="Cena pojedinačne karte:" />
+                                <h:outputText value="#{festival.cenaDan}" />
+                                
+                                <h:outputText value="Broj pregleda:" />
+                                <h:outputText value="#{festival.brojPregleda}" />
+                                
+                                <h:outputText value="Više informacija:" />
+                                Detaljnije
+                            </p:panelGrid>
+
+                            <f:facet name="footer">
+
+                            </f:facet>
+                        </p:carousel>
+
+                    </h:form>
+                </div>                
+            </div>   
+            
+            <div class="row page-header">
+                <div class="col-lg-12">
+                    <h:form id="formProdaja" style="color:#000 !important;">
+                        <p:carousel value="#{adminCarouselView.mostBuyedFestivals}" headerText="5 NAJPRODAVANIJIH FESTIVALA" var="festival" itemStyle="text-align:center" responsive="true">
+                            <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
+                                <f:facet name="header">
+
+                                </f:facet>
+
+                                <h:outputText value="Naziv:" />
+                                <h:outputText value="#{festival.get('nazivFestivala')}" />
+
+                                <h:outputText value="Datum od:" />
+                                <h:outputText value="#{festival.get('datumVremeOd')}"><f:convertDateTime pattern="dd.MM.yyyy." /></h:outputText>
+
+                                <h:outputText value="Datum do:" />
+                                <h:outputText value="#{festival.get('datumVremeDo')}"><f:convertDateTime pattern="dd.MM.yyyy." /></h:outputText>
+
+                                <h:outputText value="Mesto:" />
+                                <h:outputText value="#{festival.get('mesto')}" />
+
+                                <h:outputText value="Prosecna ocena:" />
+                                <h:outputText value="#{festival.get('prosecnaOcena')}" />
+
+                                <h:outputText value="Cena paketa:" />
+                                <h:outputText value="#{festival.get('cenaPaket')}" />
+
+                                <h:outputText value="Cena pojedinačne karte:" />
+                                <h:outputText value="#{festival.get('cenaDan')}" />
+                                
+                                <h:outputText value="Broj pregleda:" />
+                                <h:outputText value="#{festival.get('brojPregleda')}" />
+                                
+                                <h:outputText value="Broj prodatih ulaznica" />
+                                <h:outputText value="#{festival.get('brojProdatihUlaznica')}" />
+                                
+                                <h:outputText value="Više informacija:" />
+                                Detaljnije
+                            </p:panelGrid>
+
+                            <f:facet name="footer">
+
+                            </f:facet>
+                        </p:carousel>
+
+                    </h:form>
+                </div>                
+            </div>   
+            
+            <!-- Footer -->
+            <footer>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>Copyright &copy; Projekat iz predmeta Programiranje Internet aplikacija 2017</p>
+                    </div>
+                </div>
+            </footer>
+        </div>                    
+        
+        <!-- Bootstrap Core JavaScript -->
+        <script src="js/bootstrap.min.js"></script>
+
+        <!-- Script to Activate the Carousel -->
+        <script>
+        $('.carousel').carousel({
+            interval: 5000 //changes the speed
+        })
+        </script>       
+    </h:body>
+</html>
+

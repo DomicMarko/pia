@@ -253,6 +253,9 @@
 
                                 <h:outputText value="Cena pojedinačne karte:" />
                                 <h:outputText value="#{festival.cenaDan}" />
+                                
+                                <h:outputText value="Više informacija:" />
+                                <h:commandLink action="#{userControler.detailFestival(festival.idFest)}">Detaljnije</h:commandLink>
                             </p:panelGrid>
 
                             <f:facet name="footer">

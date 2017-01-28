@@ -232,6 +232,10 @@ public class UserControler {
             List result = cr.list();
             if(result.size() > 0){
                 currentFestival = (Festival)result.get(0);
+                
+                currentFestival.setBrojPregleda(currentFestival.getBrojPregleda() + 1);
+                
+                session.save(currentFestival);
                                 
                 String sql = "SELECT I.naziv, I.vremeOd, I.vremeDo, D.redniBroj FROM izvodjac I, dan D WHERE I.idFest = :festival_id AND D.idFest = :festival_id AND I.idDan = D.idDan ORDER BY I.vremeOd";
                 SQLQuery query = session.createSQLQuery(sql);
@@ -239,7 +243,7 @@ public class UserControler {
                 query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
                 izvodjaciFestivala = query.list();
                 
-                dani  = new HashMap<String, String>();
+                dani = new HashMap<String, String>();
                 izvodjaciFestivala.forEach((Map m) -> {                    
                     dani.put(m.get("redniBroj").toString(), m.get("redniBroj").toString());
                 });
@@ -281,13 +285,14 @@ public class UserControler {
                 List listTemp = cr2.list();
                 Object objTemp = listTemp.get(0);
                 rezDan = (Dan) objTemp;
-            } else{
-                cr2 = session.createCriteria(Dan.class);
-                cr2.add(Restrictions.eq("idDan", new Long(1)));
-                List listTemp = cr2.list();
-                Object objTemp = listTemp.get(0);
-                rezDan = (Dan) objTemp;
-            }
+            } else
+                if(tipRezervacije == 1){
+                    cr2 = session.createCriteria(Dan.class);
+                    cr2.add(Restrictions.eq("idDan", new Long(1)));
+                    List listTemp = cr2.list();
+                    Object objTemp = listTemp.get(0);
+                    rezDan = (Dan) objTemp;
+                }
                                                 
             if(tipRezervacije <= 0){                        
                 porukaZaRezervaciju += "Molimo Vas, odaberite tip karte koju želite da rezervišete.\n";
@@ -443,6 +448,22 @@ public class UserControler {
             cr.add(Restrictions.eq("idRez", rezId));                 
             List result = cr.list();
             Rezervacija rezForDelete = (Rezervacija)result.get(0);
+            
+            boolean isPaket = rezForDelete.getPaket();
+            int numOfUlaznica = rezForDelete.getBrojUlaznica().intValue();
+            
+            Criteria cr2 = session.createCriteria(Dan.class);
+            cr2.add(Restrictions.eq("festival", rezForDelete.getFestival()));
+            List daysOfFestival = cr2.list();
+            
+            for(Object obj: daysOfFestival){
+                    Dan dan = (Dan) obj;
+                    if(rezForDelete.getPaket() || dan.getRedniBroj() == rezForDelete.getDan().getRedniBroj()){
+                        dan.setBrojUlaznica(dan.getBrojUlaznica() + rezForDelete.getBrojUlaznica());                        
+                        session.save(dan);
+                        //tx.commit();                        
+                    }
+            }
             
             rezForDelete.setStatus("otkazana");
             

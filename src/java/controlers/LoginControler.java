@@ -197,6 +197,8 @@ public class LoginControler {
                 changePassMessage = "";
                 tx.commit();
                 tx = null;
+                
+                if(korisnik.getTipKorisnika().equals("admin")) returnPage = "indexadmin";
             }
         } catch(Exception sqle){
             if (tx!=null) tx.rollback();
