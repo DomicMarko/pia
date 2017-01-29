@@ -9,6 +9,8 @@ import entity.Dan;
 import entity.Festival;
 import entity.Izvodjac;
 import entity.Korisnik;
+import entity.Link;
+import entity.Media;
 import entity.Rezervacija;
 import hibernate.HibernateUtil;
 import java.util.ArrayList;
@@ -45,12 +47,30 @@ public class UserControler {
     private List<Festival> trazeniFestivali = new ArrayList<Festival>();
     private Festival currentFestival;    
     private List<Map> izvodjaciFestivala;
+    private List<Link> linkoviFestivala;
     private int tipRezervacije;
     private int brojUlaznica;
     private int kojiDan;
     private Map<String, String> dani;    
     private List<Map> rezervacije;
     private Date currentDate;
+    private String currentFestivalMainImg;
+
+    public List<Link> getLinkoviFestivala() {
+        return linkoviFestivala;
+    }
+
+    public void setLinkoviFestivala(List<Link> linkoviFestivala) {
+        this.linkoviFestivala = linkoviFestivala;
+    }        
+
+    public String getCurrentFestivalMainImg() {
+        return currentFestivalMainImg;
+    }
+
+    public void setCurrentFestivalMainImg(String currentFestivalMainImg) {
+        this.currentFestivalMainImg = currentFestivalMainImg;
+    }        
 
     public String getNazivFestivala() {
         return nazivFestivala;
@@ -235,7 +255,7 @@ public class UserControler {
                 
                 currentFestival.setBrojPregleda(currentFestival.getBrojPregleda() + 1);
                 
-                session.save(currentFestival);
+                session.save(currentFestival);                               
                                 
                 String sql = "SELECT I.naziv, I.vremeOd, I.vremeDo, D.redniBroj FROM izvodjac I, dan D WHERE I.idFest = :festival_id AND D.idFest = :festival_id AND I.idDan = D.idDan ORDER BY I.vremeOd";
                 SQLQuery query = session.createSQLQuery(sql);
@@ -246,7 +266,20 @@ public class UserControler {
                 dani = new HashMap<String, String>();
                 izvodjaciFestivala.forEach((Map m) -> {                    
                     dani.put(m.get("redniBroj").toString(), m.get("redniBroj").toString());
-                });
+                });                
+                
+                cr = session.createCriteria(Media.class);
+                cr.add(Restrictions.eq("festival", currentFestival));     
+                cr.add(Restrictions.eq("slikaVideo", "slika"));
+                result = cr.list();
+                if(result.size() > 0) currentFestivalMainImg = ((Media)result.get(0)).getUrl();
+                else currentFestivalMainImg = null;
+                
+                cr = session.createCriteria(Link.class);
+                cr.add(Restrictions.eq("festival", currentFestival));                     
+                result = cr.list();
+                if(result.size() > 0) linkoviFestivala = (List<Link>) result;
+                else linkoviFestivala = new ArrayList<Link>();
             }
             else{
                 porukaZaPretragu = "Došlo je do greške, molimo Vas, pokušajte malo kasnije.";

@@ -110,78 +110,217 @@
             <div class="row">
                 <div class="col-xs-12">
                     <h1 style="margin-bottom: 40px; margin-top: 40px;">Dodavanje festivala</h1>
-                    <h:form id="stepsForm">
-                        <p:steps activeIndex="0" styleClass="custom" readonly="false">
-                            <p:menuitem value="Osnovne informacije" url="#{adminControler.pressedStep(0)}"/>
-                            <p:menuitem value="Izvodjači po danima" url="#{adminControler.pressedStep(1)}"/>
-                            <p:menuitem value="Media" url="#{adminControler.pressedStep(2)}"/>
-                            <p:menuitem value="Cena i linkovi" url="#{adminControler.pressedStep(3)}"/>
-                        </p:steps>
-                    </h:form>                    
+                    <h:form>
+                 
+                        <p:growl id="growl" sticky="true" showDetail="true"/>
+
+                        <p:wizard flowListener="#{adminControler.onFlowProcess}">
+                            <p:tab id="osnovne" title="Osnovne informacije">
+                                <p:panel header="Osnovne informacije">                            
+                                    <p:messages />
+                                    <div class="page-header">
+                                        <div class="row">
+                                            <div class="col-md-6">                        
+                                                <div class="panel-heading">
+                                                    <h4>Naziv festivala:</h4>   
+                                                    <p:inputText style="width:100%;" value="#{adminControler.newFestival.naziv}" required="true" label="Naziv festivala" />
+                                                </div>                                                
+                                            </div>
+                                            <div class="col-md-6">                        
+                                                <div class="panel-heading">
+                                                    <h4>Mesto festivala:</h4>   
+                                                    <p:inputText style="width:100%;" value="#{adminControler.newFestival.mesto}" required="true" label="Mesto festivala" />
+                                                </div>                                                
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">                        
+                                                <div class="panel-heading">
+                                                    <h4>Datum od:</h4>
+                                                    <p:growl id="msgsDatumOd" showDetail="true" />                                
+                                                    <p:calendar id="popupDatumOd" style="width:100%;" value="#{adminControler.newFestival.datumVremeOd}" pattern="dd.MM.yyyy. HH:mm"/>                                                                
+                                                </div>                
+                                            </div>
+                                            <div class="col-md-6">                        
+                                                <div class="panel-heading">
+                                                    <h4>Datum do:</h4>                                
+                                                    <p:growl id="msgsDatumDo" showDetail="true" />                                
+                                                    <p:calendar id="popupDatumDo" style="width:100%;" value="#{adminControler.newFestival.datumVremeDo}" pattern="dd.MM.yyyy. HH:mm"/>                                                                                                
+                                                </div>                            
+                                            </div>                                                   
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">                        
+                                                <div class="panel-heading">
+                                                    <h4>Više informacija:</h4>   
+                                                    <p:inputTextarea rows="6" cols="33" style="width:100%;" value="#{adminControler.newFestival.info}"/>                                   
+                                                </div>                                                
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <span style="color:red;">#{adminControler.porukaZaDodavanjeFest}</span>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </p:panel>
+                            </p:tab>
+
+                            <p:tab id="izvodjaci" title="Izvodjači">
+                                <p:panel header="Izvodjači po danima">
+                                    <p:messages />
+                                    <h:form id="formUnosIzvodjaca">
+                                        <c:if test="${!(adminControler.currentDayInput eq adminControler.daniRedBr.size())}">
+                                            <div class="row">
+                                                <div class="col-md-12">                        
+                                                    <h3 class="panel-heading">#{adminControler.currentDayInput + 1}. dan: </h3>                                                
+                                                </div>                                
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">                        
+                                                    <div class="panel-heading">
+                                                        <h4>Vreme od:</h4>
+                                                        <p:growl id="msgsVremeOd" showDetail="true" />                                
+                                                        <p:calendar id="popupVremeOd" style="width:100%;" value="#{adminControler.vremeOdInput}" pattern="HH:mm" timeOnly="true"  />                                                                
+                                                    </div>                
+                                                </div>
+                                                <div class="col-md-6">                        
+                                                    <div class="panel-heading">
+                                                        <h4>Vreme do:</h4>
+                                                        <p:growl id="msgsVremeDo" showDetail="true" />    
+                                                        <p:calendar id="popupVremeDo" style="width:100%;" value="#{adminControler.vremeDoInput}" pattern="HH:mm" timeOnly="true"  />                                        
+                                                    </div>                            
+                                                </div>                                                   
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">                        
+                                                    <div class="panel-heading">
+                                                        <h4>Izvodjač:</h4>   
+                                                        <p:inputText style="width:100%;" value="#{adminControler.nazivIzvInput}" />
+                                                    </div>                                                
+                                                </div>
+                                                <div class="col-md-6">                        
+                                                    <div class="panel-heading">
+                                                        <h4>Broj ulaznica:</h4>   
+                                                        <p:inputText style="width:100%;" value="#{adminControler.brojUlaznicaDanInput}" />
+                                                    </div>                                                
+                                                </div>
+                                            </div>                                        
+                                            <div class="row">
+                                                <div class="col-md-4 col-offset-4">                        
+                                                    <div class="panel-heading">
+                                                        <h:commandButton class="btn btn-success" style="width:100%; margin-top: 37px" value="Sledeći dan">
+                                                            <f:ajax execute="formUnosIzvodjaca" listener="#{adminControler.nextDay()}" render="formUnosIzvodjaca" />                                    
+                                                        </h:commandButton>                                        
+                                                    </div>                            
+                                                </div>
+                                            </div>
+                                        </c:if>
+                                        <c:if test="${adminControler.currentDayInput eq adminControler.daniRedBr.size()}">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <h2>Uneli ste izvodjače za sve dane festivala. Možete nastaviti dalje sa unosom informacija o festivalu.</h2>
+                                                </div>
+                                            </div> 
+                                        </c:if>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <span style="color:red;">#{adminControler.porukaZaDodavanjeFest}</span>
+                                            </div>
+                                        </div> 
+                                    </h:form>                                    
+                                </p:panel>
+                            </p:tab>
+                            
+                            <p:tab id="media" title="Media">
+                                <p:panel header="Media">
+                                    <p:messages />
+                                    <div class="row page-header">
+                                        <div class="col-lg-12">
+                                            <h:form enctype="multipart/form-data">
+                                                <span>Dozvoljeni formati: jpg, jpeg, png, gif, mp4, avi, flv, wmv, mov</span>                                                
+                                                <p:fileUpload id="uploadInput" fileUploadListener="#{adminControler.upload}" mode="advanced" dragDropSupport="false"
+                                                       update="messages" sizeLimit="8388608" fileLimit="20" allowTypes="/(\.|\/)(gif|jpe?g|png|mp4|avi|flv|wmv|mov)$/" />
+
+                                                <p:growl id="messages" showDetail="true" />
+                                            </h:form>
+                                        </div>                
+                                    </div>                                    
+                                </p:panel>
+                            </p:tab>
+
+                            <p:tab id="finalinput" title="Cena i linkovi">
+                                <p:panel header="Cena i linkovi">
+                                    <p:messages />
+                                    <div class="page-header">
+                                        <div class="row">
+                                            <div class="col-md-4">                        
+                                                <div class="panel-heading">
+                                                    <h4>Cena paket ulaznica:</h4>   
+                                                    <p:inputText style="width:100%;" value="#{adminControler.newFestival.cenaPaket}" required="true" label="Cena paket ulaznica" />
+                                                </div>                                                
+                                            </div>
+                                            <div class="col-md-4">                        
+                                                <div class="panel-heading">
+                                                    <h4>Cena pojedinačne ulaznice:</h4>   
+                                                    <p:inputText style="width:100%;" value="#{adminControler.newFestival.cenaDan}" required="true" label="Cena pojedinačne ulaznice" />
+                                                </div>                                                
+                                            </div>
+                                            <div class="col-md-4">                        
+                                                <div class="panel-heading">
+                                                    <h4>Maks ulaznica za rezervaciju:</h4>   
+                                                    <p:inputText style="width:100%;" value="#{adminControler.newFestival.maxRezUser}" required="true" label="Maksimalno rezervacija" />
+                                                </div>                                                
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <h3 class="panel-heading">Dodavanje linkova sa društvenih mreža (opciono)</h3>
+                                            </div>
+                                        </div>
+                                        <h:form id="formUnosLinkova">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <h4>#{adminControler.countLinks + 1}. link:</h4>
+                                                    <p:inputText style="width:100%;" value="#{adminControler.festivalLinkInput}" />
+                                                </div>
+                                            </div>  
+                                            <div class="row">
+                                                <div class="col-md-4 col-offset-4">                        
+                                                    <div class="panel-heading">
+                                                        <h:commandButton class="btn btn-success" style="width:100%; margin-top: 37px" value="Dodaj link">
+                                                            <f:ajax execute="formUnosLinkova" listener="#{adminControler.nextLink()}" render="formUnosLinkova" />                                    
+                                                        </h:commandButton>                                        
+                                                    </div>                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <span style="color:red;">#{adminControler.porukaZaDodavanjeFest}</span>
+                                                </div>
+                                            </div>
+                                        </h:form>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <h:form id="responseForm">
+                                                    <span style="color:red;">#{adminControler.porukaZaDodavanjeFest}</span>
+                                                    <c:if test="${adminControler.finalAddFestivalMessage}">
+                                                        <h3>Uspešno ste uneli festival!</h3>                                                        
+                                                    </c:if>
+                                                </h:form>                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p:commandButton value="Završite sa unosom festivala" actionListener="#{adminControler.save()}" update="responseForm"/>
+                                </p:panel>
+                            </p:tab>
+                           
+                        </p:wizard>
+
+                    </h:form>                   
                 </div>
             </div>
-            
-            <div class="row">
-                <h:form id="formUnosOsnovnihInformacija">
-                    <div class="col-lg-12">
-                        <h1 class="page-header">
-                            Osnovne informacije
-                        </h1>
-                    </div>
-                    <div class="page-header">
-                        <div class="row">
-                            <div class="col-md-6">                        
-                                <div class="panel-heading">
-                                    <h4>Naziv festivala:</h4>   
-                                    <p:inputText style="width:100%;" value="#{adminControler.newFestival.naziv}" />
-                                </div>                                                
-                            </div>
-                            <div class="col-md-6">                        
-                                <div class="panel-heading">
-                                    <h4>Mesto festivala:</h4>   
-                                    <p:inputText style="width:100%;" value="#{adminControler.newFestival.mesto}" />
-                                </div>                                                
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">                        
-                                <div class="panel-heading">
-                                    <h4>Datum od:</h4>
-                                    <p:growl id="msgsDatumOd" showDetail="true" />                                
-                                    <p:calendar id="popupDatumOd" style="width:100%;" value="#{adminControler.newFestival.datumVremeOd}" pattern="dd.MM.yyyy. HH:mm"/>                                                                
-                                </div>                
-                            </div>
-                            <div class="col-md-6">                        
-                                <div class="panel-heading">
-                                    <h4>Datum do:</h4>                                
-                                    <p:growl id="msgsDatumDo" showDetail="true" />                                
-                                    <p:calendar id="popupDatumDo" style="width:100%;" value="#{adminControler.newFestival.datumVremeDo}" pattern="dd.MM.yyyy. HH:mm"/>                                                                                                
-                                </div>                            
-                            </div>                                                   
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">                        
-                                <div class="panel-heading">
-                                    <h4>Više informacija:</h4>   
-                                    <p:inputTextarea rows="6" cols="33" style="width:100%;" value="#{adminControler.newFestival.info}"/>                                   
-                                </div>                                                
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4 col-offset-4">                        
-                                <div class="panel-heading">                                                    
-                                    <h:commandButton class="btn btn-success" style="width:100%; margin-top: 37px;" value="Sledeći korak" action="#{adminControler.nextStep()}"/>
-                                </div>                            
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <span style="color:red;">#{adminControler.porukaZaDodavanjeFest}</span>
-                            </div>
-                        </div>                            
-                    </div>
-                </h:form>
-            </div>
+                       
         </div>                    
         
         

@@ -110,89 +110,166 @@
             <div class="row">
                 <div class="col-xs-12">
                     <h1 style="margin-bottom: 40px; margin-top: 40px;">Dodavanje festivala</h1>
-                    <h:form id="stepsForm">
-                        <p:steps activeIndex="1" styleClass="custom" readonly="false">
-                            <p:menuitem value="Osnovne informacije" url="#{adminControler.pressedStep(0)}"/>
-                            <p:menuitem value="Izvodjači po danima" url="#{adminControler.pressedStep(1)}"/>
-                            <p:menuitem value="Media" url="#{adminControler.pressedStep(2)}"/>
-                            <p:menuitem value="Cena i linkovi" url="#{adminControler.pressedStep(3)}"/>
-                        </p:steps>
-                    </h:form>                    
+                    <h:form>
+                 
+                        <p:growl id="growl" sticky="true" showDetail="true"/>
+
+                        <p:wizard flowListener="#{adminControler.onFlowProcess2}">
+                            <p:tab id="korak1" title="Korak 1">
+                                <p:panel header="Upload .csv ili .json">                            
+                                    <p:messages />
+                                    <div class="page-header">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h:form>
+                                                    <p:fileUpload fileUploadListener="#{adminControler.uploadFromFile}" mode="advanced" dragDropSupport="false"
+                                                           update="messages" sizeLimit="100000" fileLimit="1" allowTypes="/(\.|\/)(csv|json)$/" />
+
+                                                    <p:growl id="messages" showDetail="true" />
+                                                </h:form>
+                                                <h:outputText value="#{adminControler.porukaZaDodavanjeFest}" />
+                                            </div>                                            
+                                        </div>                                        
+                                    </div>
+                                </p:panel>
+                            </p:tab>                            
+                            
+                            <p:tab id="korak2" title="Korak 2">
+                                <p:panel header="Korak 2">
+                                    <p:messages />
+                                    <div class="row page-header">
+                                        <div class="col-lg-12">
+                                            <h:form enctype="multipart/form-data">
+                                                <span>Dozvoljeni formati: jpg, jpeg, png, gif, mp4, avi, flv, wmv, mov</span>                                                
+                                                <p:fileUpload id="uploadInput" fileUploadListener="#{adminControler.upload}" mode="advanced" dragDropSupport="false"
+                                                       update="messages" sizeLimit="8388608" fileLimit="20" allowTypes="/(\.|\/)(gif|jpe?g|png|mp4|avi|flv|wmv|mov)$/" />
+
+                                                <p:growl id="messages" showDetail="true" />
+                                            </h:form>
+                                        </div>                
+                                    </div>                                    
+                                </p:panel>
+                            </p:tab>
+
+                            <p:tab id="korak3" title="Korak 3">
+                                <p:panel header="Korak 3">
+                                    <p:messages />
+                                     <div class="container" style="width:100%;">
+
+                                        <!-- Features Section -->
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <h2 class="page-header">#{adminControler.newFestival.naziv}</h2>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <table class="table table-bordered table-hover table-striped borderless">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th>Mesto:</th>
+                                                            <td>#{adminControler.newFestival.mesto}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Datum i vreme od:</th>
+                                                            <td><h:outputText value="#{adminControler.newFestival.datumVremeOd}"><f:convertDateTime pattern="dd.MM.yyyy. HH:mm" /></h:outputText></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Datum i vreme do:</th>
+                                                            <td><h:outputText value="#{adminControler.newFestival.datumVremeDo}"><f:convertDateTime pattern="dd.MM.yyyy. HH:mm" /></h:outputText></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Više informacija:</th>
+                                                            <td>#{adminControler.newFestival.info}</td>
+                                                        </tr>                            
+                                                    </tbody>
+                                                </table>
+                                                <c:if test="${!(empty adminControler.nazivIzv)}">
+                                                    <table class="table table-bordered table-hover table-striped borderless">
+                                                        <tbody>
+                                                            <ui:repeat value="#{adminControler.nazivIzv}" var="izv">
+                                                                <tr>
+                                                                    <th>Izvodjač:</th>
+                                                                    <td>#{izv}</td>
+                                                                </tr>
+                                                            </ui:repeat>
+                                                        </tbody>
+                                                    </table>
+                                                </c:if>
+                                            </div>
+                                            <div class="col-md-6">                    
+                                                <img class="img-responsive" src="#{adminControler.mediaURLs.size() > 0 ? adminControler.mediaURLs.get(0) : 'http://placehold.it/700x450'}" alt=""/>
+                                                <h3 class="page-header" style="margin-top: 20px;">Rezervacija karte</h3>                                                                  
+                                            </div>
+                                        </div>
+
+                                        <!-- Portfolio Section -->
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <h2 class="page-header">Portfolio Heading</h2>
+                                            </div>
+                                            <div class="col-md-4 col-sm-6">
+                                                <a href="portfolio-item.html">
+                                                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt=""/>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-4 col-sm-6">
+                                                <a href="portfolio-item.html">
+                                                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt=""/>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-4 col-sm-6">
+                                                <a href="portfolio-item.html">
+                                                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt=""/>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-4 col-sm-6">
+                                                <a href="portfolio-item.html">
+                                                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt=""/>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-4 col-sm-6">
+                                                <a href="portfolio-item.html">
+                                                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt=""/>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-4 col-sm-6">
+                                                <a href="portfolio-item.html">
+                                                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt=""/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <!-- /.row -->
+
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="col-lg-12">
+                                                    <h2 class="page-header">Linkovi festivala</h2>
+                                                    <ui:repeat value="#{adminControler.festivalLinks}" var="link">
+                                                        <div class="row">
+                                                            <div class="col-xs-12">
+                                                                <a href="#{link}" target="_blank">#{link}</a>
+                                                            </div>
+                                                        </div>
+                                                    </ui:repeat>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                    
+                                    <h:form id="responseForm">
+                                        <span style="color:red;">#{adminControler.porukaZaDodavanjeFest}</span>
+                                            <c:if test="${adminControler.finalAddFestivalMessage}">
+                                                <h3>Uspešno ste uneli festival!</h3>                                                        
+                                            </c:if>
+                                    </h:form>
+                                    <p:commandButton value="Završite sa unosom festivala" actionListener="#{adminControler.save()}" update="responseForm"/>
+                                </p:panel>
+                            </p:tab>
+                           
+                        </p:wizard>
+
+                    </h:form>                   
                 </div>
             </div>
-            
-            <div class="row">
-                <h:form id="formUnosIzvodjaca">
-                    <div class="col-lg-12">
-                        <h1 class="page-header">
-                            Izvodjači po danima
-                        </h1>
-                    </div>
-                    <div class="page-header">
-                            <div class="row">
-                                <div class="col-md-12">                        
-                                    <h3 class="panel-heading">#{adminControler.currentDayInput + 1}. dan: </h3>                                                
-                                </div>                                
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">                        
-                                    <div class="panel-heading">
-                                        <h4>Vreme od:</h4>
-                                        <p:growl id="msgsVremeOd" showDetail="true" />                                
-                                        <p:calendar id="popupVremeOd" style="width:100%;" value="#{adminControler.vremeOdInput}" pattern="HH:mm" timeOnly="true"  />                                                                
-                                    </div>                
-                                </div>
-                                <div class="col-md-6">                        
-                                    <div class="panel-heading">
-                                        <h4>Vreme do:</h4>
-                                        <p:growl id="msgsVremeDo" showDetail="true" />    
-                                        <p:calendar id="popupVremeDo" style="width:100%;" value="#{adminControler.vremeDoInput}" pattern="HH:mm" timeOnly="true"  />                                        
-                                    </div>                            
-                                </div>                                                   
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">                        
-                                    <div class="panel-heading">
-                                        <h4>Izvodjač:</h4>   
-                                        <p:inputText style="width:100%;" value="#{adminControler.nazivIzvInput}" />
-                                    </div>                                                
-                                </div>
-                                <div class="col-md-6">                        
-                                    <div class="panel-heading">
-                                        <h4>Broj ulaznica:</h4>   
-                                        <p:inputText style="width:100%;" value="#{adminControler.brojUlaznicaDanInput}" />
-                                    </div>                                                
-                                </div>
-                            </div>
-                        <c:if test="${adminControler.currentDayInput eq (adminControler.daniRedBr.size() - 1)}">
-                            <div class="row">
-                                <div class="col-md-4 col-offset-4">                        
-                                    <div class="panel-heading">                                                    
-                                        <h:commandButton class="btn btn-success" style="width:100%; margin-top: 37px;" value="Sledeći korak" action="#{adminControler.nextStep()}"/>
-                                    </div>                            
-                                </div>
-                            </div>
-                        </c:if>
-                        <c:if test="${!(adminControler.currentDayInput eq (adminControler.daniRedBr.size() - 1))}">
-                            <div class="row">
-                                <div class="col-md-4 col-offset-4">                        
-                                    <div class="panel-heading">
-                                        <h:commandButton class="btn btn-success" style="width:100%; margin-top: 37px" value="Sledeći dan">
-                                            <f:ajax execute="formUnosIzvodjaca" listener="#{adminControler.nextDay()}" render="formUnosIzvodjaca" />                                    
-                                        </h:commandButton>                                        
-                                    </div>                            
-                                </div>
-                            </div>
-                        </c:if>
-                        
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <span style="color:red;">#{adminControler.porukaZaDodavanjeFest}</span>
-                            </div>
-                        </div>   
-                    </div>
-                </h:form>
-            </div>
+                       
         </div>                    
         
         

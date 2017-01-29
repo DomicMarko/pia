@@ -111,8 +111,8 @@
                         </table>
                     </c:if>
                 </div>
-                <div class="col-md-6">
-                    <img class="img-responsive" src="http://placehold.it/700x450" alt=""/>
+                <div class="col-md-6">                    
+                    <img class="img-responsive" src="#{userControler.currentFestivalMainImg != null ? userControler.currentFestivalMainImg : 'http://placehold.it/700x450'}" alt=""/>
                     <h3 class="page-header" style="margin-top: 20px;">Rezervacija karte</h3>
                     <h:form id="reservationForm">
                         <div class="row">                            
@@ -186,6 +186,21 @@
                 </div>
             </div>
             <!-- /.row -->
+            
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="col-lg-12">
+                        <h2 class="page-header">Linkovi festivala</h2>
+                        <ui:repeat value="#{userControler.linkoviFestivala}" var="link">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <a href="#{link.url}" target="_blank">#{link.url}</a>
+                                </div>
+                            </div>
+                        </ui:repeat>
+                    </div>
+                </div>
+            </div>
             
             <!-- Footer -->
             <footer>
